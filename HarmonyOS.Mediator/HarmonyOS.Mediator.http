@@ -1,0 +1,6 @@
+@HarmonyOS.Mediator_HostAddress = http://localhost:5292
+
+GET {{HarmonyOS.Mediator_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

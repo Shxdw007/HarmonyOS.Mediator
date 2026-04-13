@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "qsMD/o6LIuY=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Shxdw\\RiderProjects\\HarmonyOS.Mediator\\HarmonyOS.Mediator\\HarmonyOS.Mediator.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Shxdw\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.4\\microsoft.aspnetcore.openapi.10.0.4.nupkg.sha512",
+    "C:\\Users\\Shxdw\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512",
+    "C:\\Users\\Shxdw\\.nuget\\packages\\telegram.bot\\22.9.6\\telegram.bot.22.9.6.nupkg.sha512"
+  ],
+  "logs": []
+}
