@@ -32,3 +32,4 @@ C:\Users\Shxdw\RiderProjects\HarmonyOS.Mediator\HarmonyOS.Mediator\obj\Debug\net
 C:\Users\Shxdw\RiderProjects\HarmonyOS.Mediator\HarmonyOS.Mediator\obj\Debug\net10.0\HarmonyOS.Mediator.pdb
 C:\Users\Shxdw\RiderProjects\HarmonyOS.Mediator\HarmonyOS.Mediator\obj\Debug\net10.0\HarmonyOS.Mediator.genruntimeconfig.cache
 C:\Users\Shxdw\RiderProjects\HarmonyOS.Mediator\HarmonyOS.Mediator\obj\Debug\net10.0\ref\HarmonyOS.Mediator.dll
+C:\Users\Shxdw\RiderProjects\HarmonyOS.Mediator\HarmonyOS.Mediator\obj\Debug\net10.0\HarmonyOS.Mediator.sourcelink.json

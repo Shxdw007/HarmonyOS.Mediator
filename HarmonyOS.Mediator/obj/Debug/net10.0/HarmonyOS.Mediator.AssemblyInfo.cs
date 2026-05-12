@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HarmonyOS.Mediator")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+627ee58c5fba9b144841b404d938f0a27ce6189f")]
 [assembly: System.Reflection.AssemblyProductAttribute("HarmonyOS.Mediator")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HarmonyOS.Mediator")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

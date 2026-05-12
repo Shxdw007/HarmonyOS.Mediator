@@ -26,25 +26,26 @@ public class BotController : ControllerBase
         if (update.Message?.Text == null)
             return Ok();
 
-        var chatId = update.Message.Chat.Id;
+        var chatId = update.Message.Chat.Id; 
+        var userId = update.Message.From!.Id;
+        var isGroup = update.Message.Chat.Type is ChatType.Group or ChatType.Supergroup; 
         var messageText = update.Message.Text;
-        var messageId = update.Message.MessageId;
 
         Console.WriteLine($"[TG] Получено сообщение: {messageText}");
 
         // 1. Составляем жесткий промпт для нейросети
         var prompt = $@"Проанализируй текст: '{messageText}'.
-Если текст содержит пассивную агрессию, токсичность, грубость или переход на личности, верни JSON: {{ ""is_toxic"": true, ""alternative"": ""твой вежливый вариант"" }}.
-ВАЖНЫЕ ПРАВИЛА ДЛЯ ALTERNATIVE:
-1. Пиши как живой человек, современный IT-специалист.
-2. Никакой канцелярщины, излишней официальности и фраз вроде 'Мне жаль' или 'Давайте вместе найдем решение'.
-3. Текст должен быть кратким, дружелюбным, но по делу (например: 'Сроки поджимают, подскажи, когда сможешь скинуть отчет? Нужна ли помощь?').
-Если текст абсолютно нормальный, верни JSON: {{ ""is_toxic"": false }}.
-Верни ТОЛЬКО валидный JSON-объект без пояснений.";
+           Если текст содержит пассивную агрессию, токсичность, грубость или переход на личности, верни JSON: {{ ""is_toxic"": true, ""alternative"": ""твой вежливый вариант"" }}.
+           ВАЖНЫЕ ПРАВИЛА ДЛЯ ALTERNATIVE:
+           1. Пиши как живой человек, современный IT-специалист.
+           2. Никакой канцелярщины, излишней официальности и фраз вроде 'Мне жаль' или 'Давайте вместе найдем решение'.
+           3. Текст должен быть кратким, дружелюбным, но по делу (например: 'Сроки поджимают, подскажи, когда сможешь скинуть отчет? Нужна ли помощь?').
+           Если текст абсолютно нормальный, верни JSON: {{ ""is_toxic"": false }}.
+           Верни ТОЛЬКО валидный JSON-объект без пояснений.";
 
         var ollamaRequest = new
         {
-            model = "qwen2.5:7b",
+            model = "gemma2:9b",
             prompt = prompt,
             stream = false,
             format = "json" 
@@ -64,20 +65,24 @@ public class BotController : ControllerBase
             // 4. Если ИИ решил, что это токсично - бот вмешивается
             if (aiAnalysis != null && aiAnalysis.is_toxic)
             {
-                var replyMessage = $"🚨 <b>Кажется, это прозвучало резковато.</b>\n<i>Как насчет такого варианта?</i>\n\n«{aiAnalysis.alternative}»";
-                
-                await _botClient.SendMessage(
-                    chatId: chatId,
-                    text: replyMessage,
-                    replyParameters: new Telegram.Bot.Types.ReplyParameters { MessageId = messageId },
-                    parseMode: ParseMode.Html
-                );
-                
-                Console.WriteLine($"[AI] Найдена токсичность. Предложена замена: {aiAnalysis.alternative}");
-            }
-            else
-            {
-                Console.WriteLine("[AI] Сообщение нормальное.");
+                var replyMessage = isGroup 
+                    ? $"🚨 <b>Кажется, твое сообщение в группе прозвучало резковато.</b>\n<i>Как насчет такого варианта?</i>\n\n«{aiAnalysis.alternative}»"
+                    : $"🚨 <b>Кажется, это прозвучало резковато.</b>\n<i>Как насчет такого варианта?</i>\n\n«{aiAnalysis.alternative}»";
+    
+                try
+                {
+                    await _botClient.SendMessage(
+                        chatId: userId, 
+                        text: replyMessage,
+                        parseMode: ParseMode.Html
+                    );
+        
+                    Console.WriteLine($"[AI] Отправили предупреждение в личку пользователю {userId}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[TG ERROR] Не удалось написать юзеру {userId} в ЛС. Скорее всего, он не активировал бота. Ошибка: {ex.Message}");
+                }
             }
         }
         catch (Exception ex)
